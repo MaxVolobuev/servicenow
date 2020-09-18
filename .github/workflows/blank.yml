@@ -90,8 +90,9 @@ jobs:
       - name: Build Run Tests action
         run: cd tests_run && npm install --silent && npm run build
         shell: bash
-      Run
-      - name: Apply Changes
+     
+     # Build
+     - name: Apply Changes
         uses: ./apply_changes/.github/actions/apply_changes
         env:
           snowUsername: ${{ secrets.SNOW_USERNAME }}
