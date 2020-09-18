@@ -1,0 +1,177 @@
+name: ServiceNow
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    name: CI/CD
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout
+      - name: Checkout current repository
+        uses: actions/checkout@v2
+        id: current_repo
+      - name: Checkout Apply Changes action
+        uses: actions/checkout@v2
+        with:
+          repository: vvoloshchuk/apply_changes
+          token: ${{ secrets.GH_TOKEN }}
+          path: apply_changes
+      - name: Checkout Publish Application action
+        uses: actions/checkout@v2
+        with:
+          repository: vvoloshchuk/push_app
+          token: ${{ secrets.GH_TOKEN }}
+          path: push_app
+      - name: Checkout Install Application action
+        uses: actions/checkout@v2
+        with:
+          repository: vvoloshchuk/install_app
+          token: ${{ secrets.GH_TOKEN }}
+          path: install_app
+      - name: Checkout Rollback Application action
+        uses: actions/checkout@v2
+        with:
+          repository: vvoloshchuk/rollback_app
+          token: ${{ secrets.GH_TOKEN }}
+          path: rollback_app
+      - name: Checkout Activate Plugin action
+        uses: actions/checkout@v2
+        with:
+          repository: vvoloshchuk/plugin_activate
+          token: ${{ secrets.GH_TOKEN }}
+          path: plugin_activate
+      - name: Checkout Rollback Plugin action
+        uses: actions/checkout@v2
+        with:
+          repository: vvoloshchuk/plugin_rollback
+          token: ${{ secrets.GH_TOKEN }}
+          path: plugin_rollback
+      - name: Checkout Run Tests action
+        uses: actions/checkout@v2
+        with:
+          repository: vvoloshchuk/tests_run
+          token: ${{ secrets.GH_TOKEN }}
+          path: tests_run
+      # Cache
+      - name: Cache node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          # npm cache files are stored in `~/.npm` on Linux/macOS
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+      # Build
+      - name: Build Apply Changes action
+        run: cd apply_changes && npm install --silent && npm run build
+        shell: bash
+      - name: Build Push Application action
+        run: cd push_app && npm install --silent && npm run build
+        shell: bash
+      - name: Build Install Application action
+        run: cd install_app && npm install --silent && npm run build
+        shell: bash
+      - name: Build Rollback Application action
+        run: cd rollback_app && npm install --silent && npm run build
+        shell: bash
+      - name: Build Plugin Activate action
+        run: cd plugin_activate && npm install --silent && npm run build
+        shell: bash
+      - name: Build Plugin Rollback action
+        run: cd plugin_rollback && npm install --silent && npm run build
+        shell: bash
+      - name: Build Run Tests action
+        run: cd tests_run && npm install --silent && npm run build
+        shell: bash
+      # Run
+      - name: Apply Changes
+        uses: ./apply_changes/.github/actions/apply_changes
+        env:
+          snowUsername: ${{ secrets.SNOW_USERNAME }}
+          snowPassword: ${{ secrets.SNOW_PASSWORD }}
+          snowSourceInstance: ${{ secrets.SNOW_SOURCE_INSTANCE }}
+          appSysID: ${{ secrets.APP_SYS_ID }}
+          appScope: ${{ secrets.APP_SCOPE }}
+
+      - name: Publish Application
+        id: publish_app
+        uses: ./push_app/.github/actions/publish_app
+        with:
+          version: 1.0.21
+          versionTemplate: 1.0
+        env:
+          snowUsername: ${{ secrets.SNOW_USERNAME }}
+          snowPassword: ${{ secrets.SNOW_PASSWORD }}
+          snowSourceInstance: ${{ secrets.SNOW_SOURCE_INSTANCE }}
+          appSysID: ${{ secrets.APP_SYS_ID }}
+          appScope: ${{ secrets.APP_SCOPE }}
+          versionFormat: exact # todo move it to "with:" section
+
+      - name: Install Application
+        id: install_app
+        uses: ./install_app/.github/actions/install_app
+        with:
+          version: 1.0.21 # possibility to change it to get the version from publish_app step like steps.publish_app.inputs.version
+        env:
+          snowUsername: ${{ secrets.SNOW_USERNAME }}
+          snowPassword: ${{ secrets.SNOW_PASSWORD }}
+          snowInstallInstance: ${{ secrets.SNOW_INSTALL_INSTANCE }}
+          appSysID: ${{ secrets.APP_SYS_ID }}
+          appScope: ${{ secrets.APP_SCOPE }}
+
+      - name: Rollback Installed Application
+        if: ${{ failure() && steps.install_app.outputs.rollbackVersion }}
+        uses: ./rollback_app/.github/actions/rollback_app
+        with:
+          version: ${{steps.install_app.outputs.rollbackVersion}}
+        env:
+          snowUsername: ${{ secrets.SNOW_USERNAME }}
+          snowPassword: ${{ secrets.SNOW_PASSWORD }}
+          snowInstallInstance: ${{ secrets.SNOW_INSTALL_INSTANCE }}
+          appSysID: ${{ secrets.APP_SYS_ID }}
+          appScope: ${{ secrets.APP_SCOPE }}
+
+      - name: Activate Plugin
+        uses: ./plugin_activate/.github/actions/plugin_activate
+        with:
+          pluginID:
+        env:
+          snowUsername: ${{ secrets.SNOW_USERNAME }}
+          snowPassword: ${{ secrets.SNOW_PASSWORD }}
+          snowInstallInstance: ${{ secrets.SNOW_INSTALL_INSTANCE }}
+          appSysID: ${{ secrets.APP_SYS_ID }}
+          appScope: ${{ secrets.APP_SCOPE }}
+
+      - name: Rollback Plugin
+        uses: ./plugin_rollback/.github/actions/plugin_rollback
+        with:
+          pluginID:
+        env:
+          snowUsername: ${{ secrets.SNOW_USERNAME }}
+          snowPassword: ${{ secrets.SNOW_PASSWORD }}
+          snowInstallInstance: ${{ secrets.SNOW_INSTALL_INSTANCE }}
+          appSysID: ${{ secrets.APP_SYS_ID }}
+          appScope: ${{ secrets.APP_SCOPE }}
+
+      - name: Run test suits
+        uses: ./tests_run/.github/actions/tests_run
+        with:
+          browserName: # optional
+          browserVersion: # optional
+          osName: # optional
+          osVersion: # optional
+          testSuiteSysId: 0685d5fddbdf9810ab2d40ceaa9619fc
+          testSuiteName: test
+        env:
+          snowUsername: ${{ secrets.SNOW_USERNAME }}
+          snowPassword: ${{ secrets.SNOW_PASSWORD }}
+          snowInstallInstance: ${{ secrets.SNOW_INSTALL_INSTANCE }}
+          appSysID: ${{ secrets.APP_SYS_ID }}
+          appScope: ${{ secrets.APP_SCOPE }}
