@@ -118,7 +118,7 @@ jobs:
         id: install_app
         uses: ./install_app/.github/actions/install_app
         with:
-          version: 1.0.21 # possibility to change it to get the version from publish_app step like steps.publish_app.inputs.version
+          version: 1.0.0 # possibility to change it to get the version from publish_app step like steps.publish_app.inputs.version
         env:
           snowUsername: ${{ secrets.SNOW_USERNAME }}
           snowPassword: ${{ secrets.SNOW_PASSWORD }}
