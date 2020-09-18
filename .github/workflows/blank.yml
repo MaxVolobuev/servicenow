@@ -104,7 +104,7 @@ jobs:
         id: publish_app
         uses: ./push_app/.github/actions/publish_app
         with:
-          version: 1.0.0
+          version: 1.0.1
           versionTemplate: 1.0
         env:
           snowUsername: ${{ secrets.SNOW_USERNAME }}
@@ -118,7 +118,7 @@ jobs:
         id: install_app
         uses: ./install_app/.github/actions/install_app
         with:
-          version: 1.0.0 # possibility to change it to get the version from publish_app step like steps.publish_app.inputs.version
+          version: 1.0.1 # possibility to change it to get the version from publish_app step like steps.publish_app.inputs.version
         env:
           snowUsername: ${{ secrets.SNOW_USERNAME }}
           snowPassword: ${{ secrets.SNOW_PASSWORD }}
@@ -141,7 +141,7 @@ jobs:
       - name: Activate Plugin
         uses: ./plugin_activate/.github/actions/plugin_activate
         with:
-          pluginID:
+          pluginID: com.servicenow_now_calendar
         env:
           snowUsername: ${{ secrets.SNOW_USERNAME }}
           snowPassword: ${{ secrets.SNOW_PASSWORD }}
@@ -152,7 +152,7 @@ jobs:
       - name: Rollback Plugin
         uses: ./plugin_rollback/.github/actions/plugin_rollback
         with:
-          pluginID:
+          pluginID: com.servicenow_now_calendar
         env:
           snowUsername: ${{ secrets.SNOW_USERNAME }}
           snowPassword: ${{ secrets.SNOW_PASSWORD }}
