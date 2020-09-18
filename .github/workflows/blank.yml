@@ -114,7 +114,7 @@ jobs:
           appSysID: ${{ secrets.APP_SYS_ID }}
           appScope: ${{ secrets.APP_SCOPE }}
 
-      - name: Install Application
+      - name: Install Application_1
         id: install_app
         uses: ./install_app/.github/actions/install_app
         with:
