@@ -28,7 +28,7 @@ jobs:
       - name: Checkout Install Application action
         uses: actions/checkout@v2
         with:
-          repository: vvoloshchuk/install_app_test
+          repository: vvoloshchuk/install_app
           token: ${{ secrets.GH_TOKEN }}
           path: install_app
       - name: Checkout Rollback Application action
