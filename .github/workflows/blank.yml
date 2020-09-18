@@ -104,7 +104,7 @@ jobs:
         id: publish_app
         uses: ./push_app/.github/actions/publish_app
         with:
-          version: 1.0.21
+          version: 1.0.0
           versionTemplate: 1.0
         env:
           snowUsername: ${{ secrets.SNOW_USERNAME }}
