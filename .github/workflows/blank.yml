@@ -28,7 +28,7 @@ jobs:
       - name: Checkout Install Application action
         uses: actions/checkout@v2
         with:
-          repository: vvoloshchuk/install_app
+          repository: vvoloshchuk/install_app_test
           token: ${{ secrets.GH_TOKEN }}
           path: install_app
       - name: Checkout Rollback Application action
@@ -104,7 +104,7 @@ jobs:
         id: publish_app
         uses: ./push_app/.github/actions/publish_app
         with:
-          version: 1.0.2
+          version: 1.0.3
           versionTemplate: 1.0
         env:
           snowUsername: ${{ secrets.SNOW_USERNAME }}
@@ -118,13 +118,14 @@ jobs:
         id: install_app
         uses: ./install_app/.github/actions/install_app
         with:
-          version: 1.0.1 # possibility to change it to get the version from publish_app step like steps.publish_app.inputs.version
+          version: 1.0.3 # possibility to change it to get the version from publish_app step like steps.publish_app.inputs.version
         env:
           snowUsername: ${{ secrets.SNOW_USERNAME }}
           snowPassword: ${{ secrets.SNOW_PASSWORD }}
           snowInstallInstance: ${{ secrets.SNOW_INSTALL_INSTANCE }}
           appSysID: ${{ secrets.APP_SYS_ID }}
           appScope: ${{ secrets.APP_SCOPE }}
+
 
       - name: Rollback Installed Application
         if: ${{ failure() && steps.install_app.outputs.rollbackVersion }}
