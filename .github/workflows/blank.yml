@@ -91,7 +91,7 @@ jobs:
         run: cd tests_run && npm install --silent && npm run build
         shell: bash
      
-     # Build
+     # Run
      - name: Apply Changes
         uses: ./apply_changes/.github/actions/apply_changes
         env:
