@@ -40,13 +40,13 @@ jobs:
       - name: Checkout Activate Plugin action
         uses: actions/checkout@v2
         with:
-          repository: vvoloshchuk/plugin_activate_test
+          repository: vvoloshchuk/plugin_activate
           token: ${{ secrets.GH_TOKEN }}
           path: plugin_activate
       - name: Checkout Rollback Plugin action
         uses: actions/checkout@v2
         with:
-          repository: vvoloshchuk/plugin_rollback_test
+          repository: vvoloshchuk/plugin_rollback
           token: ${{ secrets.GH_TOKEN }}
           path: plugin_rollback
       - name: Checkout Run Tests action
@@ -90,9 +90,8 @@ jobs:
       - name: Build Run Tests action
         run: cd tests_run && npm install --silent && npm run build
         shell: bash
-     
-     # Run
-     - name: Apply Changes
+      # Run
+      - name: Apply Changes
         uses: ./apply_changes/.github/actions/apply_changes
         env:
           snowUsername: ${{ secrets.SNOW_USERNAME }}
