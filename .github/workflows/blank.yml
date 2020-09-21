@@ -98,7 +98,7 @@ jobs:
           snowUsername: ${{ secrets.SNOW_USERNAME }}
           snowPassword: ${{ secrets.SNOW_PASSWORD }}
           snowSourceInstance: ${{ secrets.SNOW_SOURCE_INSTANCE }}
-           appScope: ${{ secrets.APP_SCOPE }}
+          appScope: ${{ secrets.APP_SCOPE }}
             # appSysID: ${{ secrets.APP_SYS_ID }}
 
       - name: Publish Application
@@ -112,7 +112,7 @@ jobs:
           snowUsername: ${{ secrets.SNOW_USERNAME }}
           snowPassword: ${{ secrets.SNOW_PASSWORD }}
           snowSourceInstance: ${{ secrets.SNOW_SOURCE_INSTANCE }}
-           appScope: ${{ secrets.APP_SCOPE }}
+          appScope: ${{ secrets.APP_SCOPE }}
          # appSysID: ${{ secrets.APP_SYS_ID }}
 
       - name: Install Application
@@ -124,8 +124,8 @@ jobs:
           snowUsername: ${{ secrets.SNOW_USERNAME }}
           snowPassword: ${{ secrets.SNOW_PASSWORD }}
           snowInstallInstance: ${{ secrets.SNOW_INSTALL_INSTANCE }}
-           appScope: ${{ secrets.APP_SCOPE }}
-          # appSysID: ${{ secrets.APP_SYS_ID }}
+          appScope: ${{ secrets.APP_SCOPE }}
+        # appSysID: ${{ secrets.APP_SYS_ID }}
 
       - name: Rollback Application
         if: ${{ failure() && steps.install_app.outputs.rollbackVersion }}
@@ -148,7 +148,7 @@ jobs:
           snowUsername: ${{ secrets.SNOW_USERNAME }}
           snowPassword: ${{ secrets.SNOW_PASSWORD }}
           snowInstallInstance: ${{ secrets.SNOW_INSTALL_INSTANCE }}
-           appScope: ${{ secrets.APP_SCOPE }}
+          appScope: ${{ secrets.APP_SCOPE }}
          # appSysID: ${{ secrets.APP_SYS_ID }}
 #
       - name: Rollback Plugin
@@ -160,7 +160,7 @@ jobs:
           snowUsername: ${{ secrets.SNOW_USERNAME }}
           snowPassword: ${{ secrets.SNOW_PASSWORD }}
           snowInstallInstance: ${{ secrets.SNOW_INSTALL_INSTANCE }}
-           appScope: ${{ secrets.APP_SCOPE }}
+          appScope: ${{ secrets.APP_SCOPE }}
         # appSysID: ${{ secrets.APP_SYS_ID }}
 
       - name: Run test suits
@@ -176,5 +176,5 @@ jobs:
           snowUsername: ${{ secrets.SNOW_USERNAME }}
           snowPassword: ${{ secrets.SNOW_PASSWORD }}
           snowInstallInstance: ${{ secrets.SNOW_INSTALL_INSTANCE }}
-           appScope: ${{ secrets.APP_SCOPE }}
+          appScope: ${{ secrets.APP_SCOPE }}
         # appSysID: ${{ secrets.APP_SYS_ID }}
