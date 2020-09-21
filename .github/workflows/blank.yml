@@ -115,7 +115,7 @@ jobs:
         #   appScope: ${{ secrets.APP_SCOPE }}
 
       - name: Install Application
-        id: install_app_1
+        id: install_app
         uses: ./install_app/.github/actions/install_app
         with:
           version: ${{steps.publish_app.outputs.newVersion}}
