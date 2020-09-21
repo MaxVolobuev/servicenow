@@ -142,7 +142,7 @@ jobs:
         id: activate_plugin
         uses: ./plugin_activate/.github/actions/plugin_activate
         with:
-          pluginID:
+          pluginID: com.servicenow_now_calendar
         env:
           snowUsername: ${{ secrets.SNOW_USERNAME }}
           snowPassword: ${{ secrets.SNOW_PASSWORD }}
@@ -154,7 +154,7 @@ jobs:
         if: ${{ failure() && steps.activate_plugin.outputs.failed }}
         uses: ./plugin_rollback/.github/actions/plugin_rollback
         with:
-          pluginID:
+          pluginID: com.servicenow_now_calendar
         env:
           snowUsername: ${{ secrets.SNOW_USERNAME }}
           snowPassword: ${{ secrets.SNOW_PASSWORD }}
