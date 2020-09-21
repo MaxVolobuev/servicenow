@@ -116,7 +116,7 @@ jobs:
 
       - name: Install Application
         id: install_app_1
-        uses: ./install_app/.github/actions/install_app_1
+        uses: ./install_app/.github/actions/install_app
         with:
           version: ${{steps.publish_app.outputs.newVersion}}
         env:
