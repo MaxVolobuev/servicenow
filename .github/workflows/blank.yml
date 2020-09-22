@@ -125,8 +125,8 @@ jobs:
           snowPassword: ${{ secrets.SNOW_PASSWORD }}
           snowInstallInstance: ${{ secrets.SNOW_INSTALL_INSTANCE }}
           appScope: ${{ secrets.APP_SCOPE }}
-          appSysID: "fail_trigger"
-         # appSysID: ${{ secrets.APP_SYS_ID }}
+          appSysID: ${{ secrets.APP_SYS_ID }}
+          fail: true:  
 
       - name: Rollback Application
         if: ${{ failure() && steps.install_app.outputs.rollbackVersion }}
