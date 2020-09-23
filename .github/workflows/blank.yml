@@ -126,7 +126,7 @@ jobs:
           snowInstallInstance: ${{ secrets.SNOW_INSTALL_INSTANCE }}
           appScope: ${{ secrets.APP_SCOPE }}
           appSysID: ${{ secrets.APP_SYS_ID }}
-          fail: true  
+          # fail: true  
 
       - name: Rollback Application
         if: ${{ failure() && steps.install_app.outputs.rollbackVersion }}
@@ -151,6 +151,7 @@ jobs:
           snowInstallInstance: ${{ secrets.SNOW_INSTALL_INSTANCE }}
           appScope: ${{ secrets.APP_SCOPE }}
           appSysID: ${{ secrets.APP_SYS_ID }}
+          fail: true
 #
       - name: Rollback Plugin
         if: ${{ failure() && steps.activate_plugin.outputs.failed }}
